@@ -19,3 +19,21 @@ ADD_EXECUTABLE( pcd2colorOctomap pcd2colorOctomap.cpp )
 TARGET_LINK_LIBRARIES( pcd2colorOctomap
     ${PCL_LIBRARIES}
     ${OCTOMAP_LIBRARIES})
+
+FIND_PACKAGE(OpenCV REQUIRED)
+
+# 添加g2o的依赖
+# 因为g2o不是常用库，要添加它的findg2o.cmake文件
+LIST( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules )
+SET( G2O_ROOT /usr/local/include/g2o )
+FIND_PACKAGE( G2O )
+# CSparse
+FIND_PACKAGE( CSparse )
+INCLUDE_DIRECTORIES( ${G2O_INCLUDE_DIR} ${CSPARSE_INCLUDE_DIR} )
+
+ADD_EXECUTABLE( joinmap joinMap.cpp )
+TARGET_LINK_LIBRARIES( joinmap
+    ${OCTOMAP_LIBRARIES}
+    ${OpenCV_LIBS}
+    g2o_core g2o_types_slam3d g2o_solver_csparse g2o_stuff g2o_csparse_extension ${CSPARSE_LIBRARY})
+
