@@ -1,5 +1,5 @@
-./build
-./bin
+build/*
+bin/*
 
 # Compiled Object files
 *.slo
